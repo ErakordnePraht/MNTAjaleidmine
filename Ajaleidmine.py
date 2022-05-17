@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
-from pynput.keyboard import Key, Controller
+from selenium.webdriver.common.by import By
 from datetime import datetime
 import _thread
 import time
@@ -17,44 +17,23 @@ emailpass = "emailfrom_pass"
 #Hetkel registreeritud soiduaeg
 currentDate = "25.09.2019"
 
-def enterPin():
-    time.sleep(0.5)
-    keyboard.press(Key.enter)
-    keyboard.release(Key.enter)
-    time.sleep(15)
-    keyboard.type(idpin)
-    keyboard.press(Key.enter)
-    keyboard.release(Key.enter)
-
-keyboard = Controller()
 saadaEmail = True
 fox = webdriver.Chrome()
 fox.get("https://eteenindus.mnt.ee/main.jsf")
+input("sisse logitud? ")
+
 while True:
     try:
-        try:
-            fox.find_element_by_xpath("//*[text()='SISENEN']")
-            element = fox.find_element_by_xpath("//*[text()='SISENEN']")
-            element.click()
-            element = fox.find_element_by_id("loginForm:idKaardiLogin")
-            _thread.start_new_thread( enterPin, () )
-            element.click()
-        except:
-            print()
-
         time.sleep(5)
-        element = fox.find_element_by_id("j_idt105:esmaseVoiKatTousuTaotlusBtn")
+        element = fox.find_element(By.ID, "j_idt140:j_idt159")
         element.click()
         time.sleep(2)
-        element = fox.find_element_by_xpath("//*[text()='Muuda valikut »']")
+        element = fox.find_element(By.XPATH, "//*[text()='Kus saab kõige kiiremini eksamile?']")
         element.click()
         time.sleep(3)
-        element = fox.find_element_by_xpath("//*[text()='Kus saab kõige kiiremini eksamile?']")
-        element.click()
-        time.sleep(3)
-        element = fox.find_element_by_id("varaseimadEksamiajadModal").find_elements_by_xpath(".//a")[1]
-
-        varaseimAeg = element.find_element_by_xpath(".//strong").text
+        element = fox.find_element(By.ID, "varaseimadEksamiajadForm").find_element(By.TAG_NAME, "ul")
+        print(element)
+        varaseimAeg = element.find_element(By.XPATH, ".//strong").text
         print(datetime.now().time())
         print(element.text)
         print(varaseimAeg)
