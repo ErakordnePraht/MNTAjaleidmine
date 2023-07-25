@@ -53,11 +53,9 @@ while True:
             winsound.PlaySound("found.wav", winsound.SND_FILENAME)
             server = smtplib.SMTP_SSL(emailserver, 465)
             server.login(emailusername, emailpass)
-            emailText = """To: {}
-            From: {}
-            Subject: {}\n
-            Uus soiduaeg tuli:\n{}
-            """.format(emailto, emailfrom, varaseimAeg, ascii(varaseimAegItem.text))
+            emailText = f"""From: {emailfrom}\nTo: {', '.join(emailto)}\nSubject: {varaseimAeg}\n
+            Uus soiduaeg tuli:\n{ascii(varaseimAegItem.text)}
+            """
             server.sendmail(
             emailfrom, 
             emailto, 
@@ -70,16 +68,14 @@ while True:
             print("Email saadetud - soiduaeg voeti ara")
             server = smtplib.SMTP_SSL(emailserver, 465)
             server.login(emailusername, emailpass)
-            emailText = """To: {}
-            From: {}
-            Subject: Soiduaeg voeti ara\n
-            """.format(emailto, emailfrom)
+            emailText = f"""From: {emailfrom}\nTo: {', '.join(emailto)}\nSubject: Soiduaeg voeti ara\n
+            """
             server.sendmail(
             emailfrom, 
             emailto, 
             emailText)
             server.quit()
-            
+
             saadaEmail = True
         time.sleep(60)
         print()
